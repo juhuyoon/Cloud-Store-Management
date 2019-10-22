@@ -1,0 +1,118 @@
+openapi: 3.0.0
+info:
+  title: Customer Service
+  description:
+    A resource service which provides and stores customer information.
+  version: 0.0.1
+servers: 
+  - url: 'http://localhost:8080'
+    description: Local dev server
+    
+paths:
+  /customer:
+    post:
+      summary: Saves a new customer in the database.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    get:
+      summary: Retrieve all customers from the database.
+      responses:
+        '201':
+         description: Customer information succesfully retrieved from the database.
+         content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      
+  /customer/{customer_id}:
+    put:
+      summary: Update the customer entry with provided data where customer ID matches the one provided.
+      parameters: 
+        - name: customer_id
+          in: path
+          required: true
+          description: ID of the customer to update.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+           schema:
+             $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer successfully updated. 
+    get:
+      summary: Retrieves the entry for the customer with the given ID.
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          description: ID of the custoemr you would like to retrieve. 
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200': 
+          description: Customer information succesfully found by provided ID.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    delete:
+      summary: Delete the customer entry where customer ID matches the one provided.
+      parameters: 
+        - name: customer_id
+          in: path
+          required: true
+          description: ID of the customer to delete.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Customer successfully deleted. 
+
+ 
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        street: 
+          type: string
+        city: 
+          type: string
+        zip:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+      required: 
+        - first_name
+        - last_name
+        - street
+        - city
+        - zip
+        - email
+        - phone
