@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/U2Capstone.iml" filepath="$PROJECT_DIR$/.idea/U2Capstone.iml" />
       <module fileurl="file://$PROJECT_DIR$/game-store-config-server/game-store-config-server.iml" filepath="$PROJECT_DIR$/game-store-config-server/game-store-config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/game-store-eureka-server/game-store-eureka-server.iml" filepath="$PROJECT_DIR$/game-store-eureka-server/game-store-eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/game-store-invoice-server/game-store-invoice-server.iml" filepath="$PROJECT_DIR$/game-store-invoice-server/game-store-invoice-server.iml" />
     </modules>
   </component>
 </project>
