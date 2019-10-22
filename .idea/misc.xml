@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/game-store-config-server/pom.xml" />
         <option value="$PROJECT_DIR$/game-store-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/game-store-invoice-server/pom.xml" />
       </list>
     </option>
   </component>

@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/game-store-config-server" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/game-store-eureka-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game-store-invoice-server" charset="UTF-8" />
   </component>
 </project>
