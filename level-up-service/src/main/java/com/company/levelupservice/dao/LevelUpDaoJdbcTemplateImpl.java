@@ -25,7 +25,7 @@ public class LevelUpDaoJdbcTemplateImpl implements LevelUpDao{
     @Override
     public LevelUp createLevelUp(LevelUp lvl) {
         jdbcTemplate.update(INSERT_LEVELUP_SQL, lvl.getCustomer_id(), lvl.getPoints(), lvl.getMember_date());
-        int id = jdbcTemplate.queryForObject("")
+        int id = jdbcTemplate.queryForObject("SELECT last_insert_id()", Integer.class);
 
     }
 
