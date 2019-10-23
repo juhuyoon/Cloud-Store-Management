@@ -2,7 +2,7 @@ package com.company.customerservice.model;
 
 import java.util.Objects;
 
-public class Customer {
+public class CustomerViewModel {
 
     private int customer_id;
     private String first_name;
@@ -13,7 +13,7 @@ public class Customer {
     private String email;
     private String phone;
 
-    public Customer(int customer_id, String first_name, String last_name, String street, String city, String zip, String email, String phone) {
+    public CustomerViewModel(int customer_id, String first_name, String last_name, String street, String city, String zip, String email, String phone) {
         this.customer_id = customer_id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -24,7 +24,7 @@ public class Customer {
         this.phone = phone;
     }
 
-    public Customer(String first_name, String last_name, String street, String city, String zip, String email, String phone) {
+    public CustomerViewModel(String first_name, String last_name, String street, String city, String zip, String email, String phone) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.street = street;
@@ -34,7 +34,7 @@ public class Customer {
         this.phone = phone;
     }
 
-    public Customer(){}
+    public CustomerViewModel(){}
 
     public int getCustomer_id() {
         return customer_id;
@@ -104,15 +104,15 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return customer_id == customer.customer_id &&
-                first_name.equals(customer.first_name) &&
-                last_name.equals(customer.last_name) &&
-                street.equals(customer.street) &&
-                city.equals(customer.city) &&
-                zip.equals(customer.zip) &&
-                email.equals(customer.email) &&
-                phone.equals(customer.phone);
+        CustomerViewModel that = (CustomerViewModel) o;
+        return customer_id == that.customer_id &&
+                first_name.equals(that.first_name) &&
+                last_name.equals(that.last_name) &&
+                street.equals(that.street) &&
+                city.equals(that.city) &&
+                zip.equals(that.zip) &&
+                email.equals(that.email) &&
+                phone.equals(that.phone);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "CustomerViewModel{" +
                 "customer_id=" + customer_id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
