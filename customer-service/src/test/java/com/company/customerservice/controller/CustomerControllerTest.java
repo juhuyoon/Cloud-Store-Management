@@ -110,6 +110,7 @@ public class CustomerControllerTest {
 
         this.mockMvc.perform(get("/console/" + cvmSaved.getCustomer_id()))
                 .andDo(print())
+                .andExpect(status().isFound())
                 .andExpect(content().json(outputJson)
         );
     }
