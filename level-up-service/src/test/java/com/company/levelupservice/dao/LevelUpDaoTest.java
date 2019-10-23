@@ -3,7 +3,10 @@ package com.company.levelupservice.dao;
 import com.company.levelupservice.model.LevelUp;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class LevelUpDaoTest {
 
     @Autowired
@@ -30,7 +35,8 @@ public class LevelUpDaoTest {
         );
 
         LevelUp checkLvl = dao.createLevelUp(lvl1);
-
+        dao.readLevelUp(checkLvl.getLevel_up_id());
+        System.out.println(checkLvl);
         assertNotNull(checkLvl.getLevel_up_id());
         assertTrue(checkLvl.getCustomer_id() > 0);
         assertEquals(lvl1.getCustomer_id(), checkLvl.getCustomer_id());
