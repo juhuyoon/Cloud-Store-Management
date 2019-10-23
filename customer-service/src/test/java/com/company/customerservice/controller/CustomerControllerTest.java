@@ -22,9 +22,10 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -108,8 +109,9 @@ public class CustomerControllerTest {
 
         when(serviceLayer.findCustomer(1)).thenReturn(cvmSaved);
 
-        this.mockMvc.perform(get("/console/" + cvmSaved.getCustomer_id()))
+        this.mockMvc.perform(get("/customer/" + cvmSaved.getCustomer_id()))
                 .andDo(print())
+                .andExpect(status().isFound())
                 .andExpect(content().json(outputJson)
         );
     }
@@ -179,8 +181,14 @@ public class CustomerControllerTest {
 
     @Test
     public void deleteCustomer() throws Exception {
+
+        serviceLayer.removeCustomer(1);
+
+        verify(serviceLayer, times(1)).removeCustomer(1);
+
         this.mockMvc.perform(delete("/customer/" + 1))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()
+        );
     }
 }
