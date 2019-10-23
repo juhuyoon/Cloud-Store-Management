@@ -122,7 +122,7 @@ public class CustomerViewModel {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "CustomerViewModel{" +
                 "customer_id=" + customer_id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
