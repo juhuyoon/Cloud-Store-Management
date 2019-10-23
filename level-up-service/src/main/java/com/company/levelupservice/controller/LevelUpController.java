@@ -18,21 +18,27 @@ public class LevelUpController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LevelViewModel createLevelUp(@RequestBody LevelViewModel levelViewModel){return null;}
+    public LevelViewModel createLevelUp(@RequestBody LevelViewModel levelViewModel){
+        return serviceLayer.addLevelUpEntry(levelViewModel);
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
-    public List<LevelViewModel> getAllLevelUp(){return null;}
+    public List<LevelViewModel> getAllLevelUp(){
+        return serviceLayer.findAllLevelUpEntries();
+    }
 
     @GetMapping(value = "/{level_up_id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public LevelViewModel getLevelUp(@PathVariable int level_up_id){return null;}
+    public LevelViewModel getLevelUp(@PathVariable int level_up_id){
+        return serviceLayer.findLevelUpEntry(level_up_id);
+    }
 
     @PutMapping(value = "/{level_up_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateLevelUp(@RequestBody LevelViewModel levelViewModel){}
+    public void updateLevelUp(@RequestBody LevelViewModel levelViewModel){serviceLayer.updateLevelUpEntry(levelViewModel);}
 
     @DeleteMapping(value = "/{level_up_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteLevelUp(@PathVariable int level_up_id){}
+    public void deleteLevelUp(@PathVariable int level_up_id){serviceLayer.removeLevelUpEntry(level_up_id);}
 }

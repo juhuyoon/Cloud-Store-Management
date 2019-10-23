@@ -1,5 +1,6 @@
 package com.company.levelupservice.controller;
 
+import com.company.levelupservice.dao.LevelUpDao;
 import com.company.levelupservice.model.LevelViewModel;
 import com.company.levelupservice.service.ServiceLayer;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,6 +41,9 @@ public class LevelUpControllerTest {
     private ServiceLayer serviceLayer;
 
     @MockBean
+    private LevelUpDao levelUpDao;
+
+    @MockBean
     private DataSource dataSource;
 
     @InjectMocks
@@ -48,48 +53,6 @@ public class LevelUpControllerTest {
 
     @Before
     public void setUp() throws Exception {
-    }
-
-    private void setServiceLayer(){
-        serviceLayer = mock(ServiceLayer.class);
-
-        //view model - no id
-        LevelViewModel lvm1New = new LevelViewModel(
-                1,
-                20,
-                LocalDate.of(2000,01,01)
-        );
-
-        LevelViewModel lvm2New = new LevelViewModel(
-                2,
-                42,
-                LocalDate.of(2000,02,02)
-        );
-        //view model - saved
-        LevelViewModel lvm1Saved = new LevelViewModel(
-                1,
-                1,
-                20,
-                LocalDate.of(2000,01,01)
-        );
-
-        LevelViewModel lvm2Saved = new LevelViewModel(
-                2,
-                2,
-                42,
-                LocalDate.of(2000,02,02)
-        );
-        List<LevelViewModel> expectedLvm = new ArrayList<>();
-        expectedLvm.add(lvm1Saved);
-        expectedLvm.add(lvm2Saved);
-
-        doReturn(lvm1Saved).when(serviceLayer).addLevelUpEntry(lvm1New);
-        doReturn(lvm2Saved).when(serviceLayer).addLevelUpEntry(lvm2New);
-        doReturn(lvm1Saved).when(serviceLayer).findLevelUpEntry(1);
-        doReturn(lvm2Saved).when(serviceLayer).findLevelUpEntry(2);
-        doReturn(expectedLvm).when(serviceLayer).findAllLevelUpEntries();
-        doNothing().when(serviceLayer).updateLevelUpEntry(any(LevelViewModel.class));
-        doNothing().when(serviceLayer).removeLevelUpEntry(anyInt());
     }
 
     @Test
@@ -108,6 +71,8 @@ public class LevelUpControllerTest {
                 LocalDate.of(2000,01,01)
         );
         String outputJson = mapper.writeValueAsString(lvm1Saved);
+
+        when(serviceLayer.addLevelUpEntry(lvm1New)).thenReturn(lvm1Saved);
 
         this.mockMvc.perform(post("/level-up")
             .content(inputJson)
@@ -139,6 +104,8 @@ public class LevelUpControllerTest {
 
         String outputJson = mapper.writeValueAsString(expectedLvm);
 
+        when(serviceLayer.findAllLevelUpEntries()).thenReturn(expectedLvm);
+
         this.mockMvc.perform(get("/level-up"))
                 .andDo(print())
                 .andExpect(status().isFound())
@@ -156,6 +123,8 @@ public class LevelUpControllerTest {
         );
 
         String outputJson = mapper.writeValueAsString(lvm1Saved);
+
+        when(serviceLayer.findLevelUpEntry(1)).thenReturn(lvm1Saved);
 
         this.mockMvc.perform(get("/level-up/1"))
                 .andDo(print())
@@ -184,8 +153,6 @@ public class LevelUpControllerTest {
 
     @Test
     public void deleteLevelUp() throws Exception {
-
-        //levelUpControllerTest.deleteLevelUp();
 
         this.mockMvc.perform(delete("/level-up/1"))
                 .andDo(print())
