@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class CustomerController {
     //createMethod()
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerViewModel createCustomer(@RequestBody CustomerViewModel cvm){
+    public CustomerViewModel createCustomer(@Valid @RequestBody CustomerViewModel cvm){
         return serviceLayer.addCustomer(cvm);
     }
 
@@ -40,7 +41,7 @@ public class CustomerController {
     //updateMethod()
     @PutMapping(value = "/{customer_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCustomer(@RequestBody CustomerViewModel cvm){
+    public void updateCustomer(@Valid @RequestBody CustomerViewModel cvm){
         serviceLayer.updateCustomer(cvm);
     }
 
