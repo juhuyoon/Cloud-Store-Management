@@ -1,16 +1,32 @@
 package com.company.customerservice.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class CustomerViewModel {
 
     private int customer_id;
+    @NotNull
+    @Size(max = 50)
     private String first_name;
+    @NotNull
+    @Size(max = 50)
     private String last_name;
+    @NotNull
+    @Size(max = 50)
     private String street;
+    @NotNull
+    @Size(max = 50)
     private String city;
+    @NotNull
+    @Size(max = 10)
     private String zip;
+    @NotNull
+    @Size(max = 75)
     private String email;
+    @NotNull
+    @Size(max = 20)
     private String phone;
 
     public CustomerViewModel(int customer_id, String first_name, String last_name, String street, String city, String zip, String email, String phone) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class LevelUpController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LevelViewModel createLevelUp(@RequestBody LevelViewModel levelViewModel){
+    public LevelViewModel createLevelUp(@Valid @RequestBody LevelViewModel levelViewModel){
         return serviceLayer.addLevelUpEntry(levelViewModel);
     }
 
@@ -45,7 +46,7 @@ public class LevelUpController {
 
     @PutMapping(value = "/{level_up_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateLevelUp(@RequestBody LevelViewModel levelViewModel){serviceLayer.updateLevelUpEntry(levelViewModel);}
+    public void updateLevelUp(@Valid @RequestBody LevelViewModel levelViewModel){serviceLayer.updateLevelUpEntry(levelViewModel);}
 
     @DeleteMapping(value = "/{level_up_id}")
     @ResponseStatus(HttpStatus.OK)
