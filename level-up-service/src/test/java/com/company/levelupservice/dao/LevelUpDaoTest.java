@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -77,6 +78,20 @@ public class LevelUpDaoTest {
         List<LevelUp> checkList = dao.readAll();
 
         assertEquals(expectedList, checkList);
+    }
+
+    @Test
+    public void readByCustomer(){
+        LevelUp lvl1 = new LevelUp(
+                1,
+                20,
+                LocalDate.of(2000,01,01)
+        );
+        lvl1 = dao.createLevelUp(lvl1);
+
+        LevelUp checkLvl = dao.readByCustomer(1);
+
+        assertEquals(lvl1, checkLvl);
     }
 
     @Test

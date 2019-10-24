@@ -1,6 +1,5 @@
 package com.company.levelupservice.controller;
 
-import com.company.levelupservice.circuitbreaker.LevelUpServiceCircuitBreaker;
 import com.company.levelupservice.model.LevelViewModel;
 import com.company.levelupservice.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ public class LevelUpController {
     @Autowired
     private ServiceLayer serviceLayer;
 
-    @Autowired
-    private LevelUpServiceCircuitBreaker circuitBreaker;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,7 +39,7 @@ public class LevelUpController {
     @GetMapping(value = "/customer/{customer_id}")
     @ResponseStatus(HttpStatus.FOUND)
     public LevelViewModel getLevelUpByCustomer(@PathVariable int customer_id){
-        return null;
+        return serviceLayer.findLevelUpByCustomer(customer_id);
     }
 
 
