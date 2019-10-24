@@ -37,6 +37,9 @@ public class LevelUpControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private LevelUpController controller;
+
     @MockBean
     private ServiceLayer serviceLayer;
 
@@ -173,6 +176,9 @@ public class LevelUpControllerTest {
 
     @Test
     public void deleteLevelUp() throws Exception {
+        controller.deleteLevelUp(1);
+
+        verify(serviceLayer, times(1)).removeLevelUpEntry(1);
 
         this.mockMvc.perform(delete("/level-up/1"))
                 .andDo(print())
