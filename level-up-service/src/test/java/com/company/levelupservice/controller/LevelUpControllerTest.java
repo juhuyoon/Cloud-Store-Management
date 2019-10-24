@@ -130,7 +130,27 @@ public class LevelUpControllerTest {
                 .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(content().json(outputJson)
+                );
+    }
+
+    @Test
+    public void getLevelUpByCustomer() throws Exception {
+        LevelViewModel lvm1Saved = new LevelViewModel(
+                1,
+                1,
+                20,
+                LocalDate.of(2000,01,01)
         );
+
+        String outputJson = mapper.writeValueAsString(lvm1Saved);
+
+        when(serviceLayer.findLevelUpByCustomer(1)).thenReturn(lvm1Saved);
+
+        this.mockMvc.perform(get("/level-up/customer/1"))
+                .andDo(print())
+                .andExpect(status().isFound())
+                .andExpect(content().json(outputJson)
+                );
     }
 
     @Test

@@ -18,6 +18,22 @@ public class LevelViewModel {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate member_date;
+    private String circuit_breaker_message;
+
+    public LevelViewModel(int level_up_id, int customer_id, Integer points, LocalDate member_date, String circuit_breaker_message) {
+        this.level_up_id = level_up_id;
+        this.customer_id = customer_id;
+        this.points = points;
+        this.member_date = member_date;
+        this.circuit_breaker_message = circuit_breaker_message;
+    }
+
+    public LevelViewModel(int customer_id, Integer points, LocalDate member_date, String circuit_breaker_message) {
+        this.customer_id = customer_id;
+        this.points = points;
+        this.member_date = member_date;
+        this.circuit_breaker_message = circuit_breaker_message;
+    }
 
     public LevelViewModel(int level_up_id, int customer_id, Integer points, LocalDate member_date) {
         this.level_up_id = level_up_id;
@@ -66,6 +82,14 @@ public class LevelViewModel {
         this.member_date = member_date;
     }
 
+    public String getCircuit_breaker_message() {
+        return circuit_breaker_message;
+    }
+
+    public void setCircuit_breaker_message(String circuit_breaker_message) {
+        this.circuit_breaker_message = circuit_breaker_message;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,12 +98,13 @@ public class LevelViewModel {
         return level_up_id == that.level_up_id &&
                 customer_id == that.customer_id &&
                 points.equals(that.points) &&
-                member_date.equals(that.member_date);
+                member_date.equals(that.member_date) &&
+                Objects.equals(circuit_breaker_message, that.circuit_breaker_message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(level_up_id, customer_id, points, member_date);
+        return Objects.hash(level_up_id, customer_id, points, member_date, circuit_breaker_message);
     }
 
     @Override
@@ -89,6 +114,7 @@ public class LevelViewModel {
                 ", customer_id=" + customer_id +
                 ", points=" + points +
                 ", member_date=" + member_date +
+                ", circuit_breaker_message='" + circuit_breaker_message + '\'' +
                 '}';
     }
 }

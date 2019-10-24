@@ -17,6 +17,7 @@ public class LevelUpDaoJdbcTemplateImpl implements LevelUpDao{
     private static final String INSERT_LEVELUP_SQL = "INSERT INTO level_up (customer_id, points, member_date) VALUE (?, ?, ?)";
     private static final String SELECT_LEVELUP_SQL = "SELECT * FROM level_up WHERE level_up_id = ?";
     private static final String SELECT_ALL_LEVELUPS_SQL = "SELECT * FROM level_up";
+    private static final String SELECT_BY_CUSTOMER_SQL = "SELECT * FROM level_up WHERE customer_id = ?";
     private static final String UPDATE_LEVELUP_SQL = "UPDATE level_up SET customer_id = ?, points = ?, member_date = ? WHERE level_up_id = ?";
     private static final String DELETE_LEVELUP_SQL = "DELETE FROM level_up WHERE level_up_id = ?";
 
@@ -47,6 +48,15 @@ public class LevelUpDaoJdbcTemplateImpl implements LevelUpDao{
     @Override
     public List<LevelUp> readAll() {
         return jdbcTemplate.query(SELECT_ALL_LEVELUPS_SQL, this::mapRowToObject);
+    }
+
+    @Override
+    public LevelUp readByCustomer(int customer_id) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_BY_CUSTOMER_SQL, this::mapRowToObject, customer_id);
+        } catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
