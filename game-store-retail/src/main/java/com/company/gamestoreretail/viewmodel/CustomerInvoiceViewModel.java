@@ -1,4 +1,4 @@
 package com.company.gamestoreretail.viewmodel;
 
-public class InvoiceViewModel {
+public class CustomerInvoiceViewModel {
 }
