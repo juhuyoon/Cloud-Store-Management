@@ -47,6 +47,9 @@ public class CustomerControllerTest {
     @MockBean
     private DataSource dataSource;
 
+    @Autowired
+    private CustomerController customerController;
+
     @InjectMocks
     private CustomerControllerTest customerControllerTest;
 
@@ -54,7 +57,6 @@ public class CustomerControllerTest {
 
     @Before
     public void setUp() throws Exception {
-
     }
 
     @Test
@@ -182,13 +184,14 @@ public class CustomerControllerTest {
     @Test
     public void deleteCustomer() throws Exception {
 
-        serviceLayer.removeCustomer(1);
+        customerController.deleteCustomer(1);
 
         verify(serviceLayer, times(1)).removeCustomer(1);
 
         this.mockMvc.perform(delete("/customer/" + 1))
                 .andDo(print())
-                .andExpect(status().isOk()
-        );
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+        ;
     }
 }
