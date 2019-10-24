@@ -1,5 +1,6 @@
 package com.company.adminapi.util.feign;
 
+import com.company.adminapi.dto.Invoice;
 import com.company.adminapi.dto.InvoiceItem;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @FeignClient(name = "invoice-service")
-public interface Invoice {
+public interface InvoiceClient {
     //@PostMapping
     @RequestMapping(value = "/invoice", method = RequestMethod.POST)
     public Invoice createInvoice(@RequestBody @Valid Invoice invoice);
@@ -37,7 +38,7 @@ public interface Invoice {
 
     //@PostMapping
     @RequestMapping(value = "/invoice_item", method = RequestMethod.POST)
-    public InvoiceItem createInvoiceIteem(@RequestBody @Valid InvoiceItem invoiceItem);
+    public InvoiceItem createInvoiceItem(@RequestBody @Valid InvoiceItem invoiceItem);
 
     //@DeleteMapping(path = "/{invoiceItem_id}")
     @RequestMapping(value = "/invoiceItem/{invoiceItem_id}", method = RequestMethod.DELETE)
