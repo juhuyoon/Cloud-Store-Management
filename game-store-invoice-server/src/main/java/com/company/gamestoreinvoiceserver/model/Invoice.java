@@ -1,39 +1,47 @@
 package com.company.gamestoreinvoiceserver.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
 
-    private int invoice_id;
-    private int customer_id;
+    private Integer invoice_id;
+    @NotBlank(message = "Please provide a customer id")
+    private Integer customer_id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate purchase_date;
-    private List<InvoiceItem> invoiceItems;
 
     public Invoice() {
     }
 
-    public Invoice(int invoice_id, int customer_id, LocalDate purchase_date, List<InvoiceItem> invoiceItems) {
+    public Invoice(Integer invoice_id, @NotBlank(message = "Please provide a customer id") Integer customer_id, LocalDate purchase_date) {
         this.invoice_id = invoice_id;
         this.customer_id = customer_id;
         this.purchase_date = purchase_date;
-        this.invoiceItems = invoiceItems;
     }
 
-    public int getInvoice_id() {
+    public Integer getInvoice_id() {
         return invoice_id;
     }
 
-    public void setInvoice_id(int invoice_id) {
+    public void setInvoice_id(Integer invoice_id) {
         this.invoice_id = invoice_id;
     }
 
-    public int getCustomer_id() {
+    public Integer getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(int customer_id) {
+    public void setCustomer_id(Integer customer_id) {
         this.customer_id = customer_id;
     }
 
@@ -45,28 +53,19 @@ public class Invoice {
         this.purchase_date = purchase_date;
     }
 
-    public List<InvoiceItem> getInvoiceItems() {
-        return invoiceItems;
-    }
-
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
-        this.invoiceItems = invoiceItems;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return invoice_id == invoice.invoice_id &&
-                customer_id == invoice.customer_id &&
-                purchase_date.equals(invoice.purchase_date) &&
-                invoiceItems.equals(invoice.invoiceItems);
+        return Objects.equals(invoice_id, invoice.invoice_id) &&
+                Objects.equals(customer_id, invoice.customer_id) &&
+                Objects.equals(purchase_date, invoice.purchase_date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoice_id, customer_id, purchase_date, invoiceItems);
+        return Objects.hash(invoice_id, customer_id, purchase_date);
     }
 
     @Override
@@ -75,7 +74,6 @@ public class Invoice {
                 "invoice_id=" + invoice_id +
                 ", customer_id=" + customer_id +
                 ", purchase_date=" + purchase_date +
-                ", invoiceItems=" + invoiceItems +
                 '}';
     }
 }
