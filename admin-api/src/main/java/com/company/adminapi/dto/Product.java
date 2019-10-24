@@ -26,12 +26,12 @@ public class Product {
         this.product_name = product_name;
     }
 
-    public String getDescription() {
+    public String getProduct_description() {
         return product_description;
     }
 
-    public void setDescription(String description) {
-        this.product_description = description;
+    public void setProduct_description(String product_description) {
+        this.product_description = product_description;
     }
 
     public BigDecimal getList_price() {
@@ -57,14 +57,14 @@ public class Product {
         Product product = (Product) o;
         return getProduct_id() == product.getProduct_id() &&
                 getProduct_name().equals(product.getProduct_name()) &&
-                getDescription().equals(product.getDescription()) &&
+                getProduct_description().equals(product.getProduct_description()) &&
                 getList_price().equals(product.getList_price()) &&
                 getUnit_cost().equals(product.getUnit_cost());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProduct_id(), getProduct_name(), getDescription(), getList_price(), getUnit_cost());
+        return Objects.hash(getProduct_id(), getProduct_name(), getProduct_description(), getList_price(), getUnit_cost());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Product {
         return "Product{" +
                 "product_id=" + product_id +
                 ", product_name='" + product_name + '\'' +
-                ", description='" + product_description + '\'' +
+                ", product_description='" + product_description + '\'' +
                 ", list_price=" + list_price +
                 ", unit_cost=" + unit_cost +
                 '}';
