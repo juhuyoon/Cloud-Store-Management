@@ -98,6 +98,8 @@ public class ServiceLayerTest {
         doReturn(lvl1Saved).when(levelUpDao).readLevelUp(1);
         doReturn(lvl2Saved).when(levelUpDao).readLevelUp(2);
         doReturn(expectedLvl).when(levelUpDao).readAll();
+        doReturn(lvl1Saved).when(levelUpDao).readByCustomer(1);
+        doReturn(lvl2Saved).when(levelUpDao).readByCustomer(2);
         doNothing().when(levelUpDao).updateLevelUp(objectArgumentCaptor.capture());
         doNothing().when(levelUpDao).deleteLevelUp(integerArgumentCaptor.capture());
     }
@@ -153,6 +155,20 @@ public class ServiceLayerTest {
         List<LevelViewModel> checkList = serviceLayer.findAllLevelUpEntries();
 
         assertEquals(expectedLvm, checkList);
+    }
+
+    @Test
+    public void findLevelUpEntryByCustomerId() {
+        LevelViewModel lvm1Saved = new LevelViewModel(
+                1,
+                1,
+                20,
+                LocalDate.of(2000,01,01)
+        );
+
+        LevelViewModel checkLvm = serviceLayer.findLevelUpByCustomer(1);
+
+        assertEquals(lvm1Saved, checkLvm);
     }
 
     @Test

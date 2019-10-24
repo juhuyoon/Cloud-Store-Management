@@ -16,6 +16,9 @@ public interface LevelUpDao {
     //read all
     List<LevelUp> readAll();
 
+    //read by customer
+    LevelUp readByCustomer(int customer_id);
+
     //update
     void updateLevelUp(LevelUp lvl);
 

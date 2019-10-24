@@ -34,6 +34,10 @@ public class ServiceLayer {
         return lvmList;
     }
 
+    public LevelViewModel findLevelUpByCustomer(int customer_id){
+        return convertObjectToViewModel(levelUpDao.readByCustomer(customer_id));
+    }
+
     public void updateLevelUpEntry(LevelViewModel lvm){
         levelUpDao.updateLevelUp(convertViewModelToObject(lvm));
     }
