@@ -19,6 +19,9 @@ public interface LevelUpFeignClient {
     @GetMapping(value = "/{level_up_id}")
     public LevelViewModel getLevelUp(@PathVariable int level_up_id);
 
+    @GetMapping(value ="/customer/{customer_id}")
+    public LevelViewModel getLevelUpByCustomer(@PathVariable int customer_id);
+
     @PutMapping(value = "/{level_up_id}")
     public void updateLevelUp(@RequestBody LevelViewModel levelViewModel);
 
