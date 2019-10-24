@@ -1,7 +1,7 @@
-package com.company.inventoryservice.controller;
+package com.company.productservice.controller;
 
-import com.company.inventoryservice.dao.InventoryDao;
-import com.company.inventoryservice.dto.Inventory;
+import com.company.productservice.dao.ProductDao;
+import com.company.productservice.dto.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,38 +28,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(InventoryWebServiceController.class)
-@ImportAutoConfiguration(RefreshAutoConfiguration.class)
-public class InventoryWebServiceControllerTest {
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(ProductWebServiceController.class)
+@ImportAutoConfiguration(RefreshAutoConfiguration.class)
+public class ProductWebServiceControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    InventoryDao inventoryDao;
+    ProductDao productDao;
 
-    Inventory inventory, inventory2, inventory3;
+    Product product, product2, product3;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-
     @Before
     public void setUp() throws Exception {
-        inventory = new Inventory();
-        inventory2 = new Inventory();  // inventory2 is the input to a create object.
-        inventory3 = new Inventory();
+        product = new Product();
+        product2 = new Product();  // product2 is the input to a create object.
+        product3 = new Product();
 
-        inventory.setInventory_id(1);
-        inventory.setProduct_id(1);
-        inventory.setQuantity(10);
+        product.setProduct_id(1);
+        product.setProduct_name("PS4 Pro");
+        product.setProduct_description("Standard Sony Playstation 4 console.");
+        product.setList_price(new BigDecimal("349.99"));
+        product.setUnit_cost(new BigDecimal("200.00"));
 
-        inventory2.setProduct_id(1);
-        inventory2.setQuantity(10);
+        product2.setProduct_name("PS4 Pro");
+        product2.setProduct_description("Standard Sony Playstation 4 console.");
+        product2.setList_price(new BigDecimal("349.99"));
+        product2.setUnit_cost(new BigDecimal("200.00"));
 
-        inventory3.setInventory_id(2);
-        inventory3.setProduct_id(2);
-        inventory3.setQuantity(20);
+        product3.setProduct_id(2);
+        product3.setProduct_name("XBox-1");
+        product3.setProduct_description("Standard Microsoft XBox console.");
+        product3.setList_price(new BigDecimal("249.99"));
+        product3.setUnit_cost(new BigDecimal("170.00"));
 
     }
 
@@ -78,71 +84,71 @@ public class InventoryWebServiceControllerTest {
 
     //ObjectdMapper mapper = new ObjectMapper();
 
+
     @Test
-    public void createInventory() throws Exception {
-        when(inventoryDao.addInventory(inventory2)).thenReturn(inventory);
+    public void createProduct() throws Exception {
+        when(productDao.addProduct(product2)).thenReturn(product);
 
-//        String input = asJsonString(inventory2);
-//        String result = asJsonString(inventory);
+//        String input = asJsonString(product2);
+//        String result = asJsonString(product);
 
-//        String input = mapper.writeValueAsString(inventory2);
-//        String result = mapper.writeValueAsString(inventory);
+//        String input = mapper.writeValueAsString(product2);
+//        String result = mapper.writeValueAsString(product);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/inventory")
+        mockMvc.perform(MockMvcRequestBuilders.post("/product")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inventory2))
+                .content(asJsonString(product2))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 //use the objectmapper output with the json method
-                .andExpect(content().json(asJsonString(inventory)));
+                .andExpect(content().json(asJsonString(product)));
 
     }
 
     @Test
-    public void deleteInventory() throws Exception {
-        mockMvc.perform(delete("/inventory/"+1))
+    public void deleteProduct() throws Exception {
+        mockMvc.perform(delete("/product/"+1))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
+
     }
 
     @Test
-    public void getInventoryList() throws Exception {
-        List<Inventory> allInventory = new ArrayList<>();
-        allInventory.add(inventory);
-        allInventory.add(inventory3);
+    public void getProductList() throws Exception {
+        List<Product> allProduct = new ArrayList<>();
+        allProduct.add(product);
+        allProduct.add(product3);
 
-        when(inventoryDao.getAllInventory()).thenReturn(allInventory);
+        when(productDao.getAllProduct()).thenReturn(allProduct);
 
-        mockMvc.perform(get("/inventory"))
+        mockMvc.perform(get("/product"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(allInventory)));
+                .andExpect(content().json(asJsonString(allProduct)));
 
     }
 
     @Test
-    public void getInventory() throws Exception {
-        when(inventoryDao.getInventory(1)).thenReturn(inventory);
+    public void getProduct() throws Exception{
+        when(productDao.getProduct(1)).thenReturn(product);
 
-        mockMvc.perform(get("/inventory/1"))
+        mockMvc.perform(get("/product/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(inventory)));
-
+                .andExpect(content().json(asJsonString(product)));
     }
 
     @Test
-    public void updateInventory() throws Exception {
-
-        mockMvc.perform(put("/inventory")
+    public void updateProduct() throws Exception{
+        mockMvc.perform(put("/product")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8) //UTF_8 is used to view request in the print below
-                .content(asJsonString(inventory))) //write as JSON object
+                .content(asJsonString(product))) //write as JSON object
                 .andDo(print()) //print the request
                 .andExpect(status().isNoContent()) //expect status ok
                 .andExpect(content().string(""));
-    }
 
+    }
 }

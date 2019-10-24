@@ -1,7 +1,7 @@
-package com.company.inventoryservice.controller;
+package com.company.adminapi.controller;
 
-import com.company.inventoryservice.dao.InventoryDao;
-import com.company.inventoryservice.dto.Inventory;
+import com.company.adminapi.dto.Inventory;
+import com.company.adminapi.util.feign.InventoryClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -28,20 +28,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(InventoryWebServiceController.class)
+@WebMvcTest(AdminApiController.class)
 @ImportAutoConfiguration(RefreshAutoConfiguration.class)
-public class InventoryWebServiceControllerTest {
+public class AdminApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    InventoryDao inventoryDao;
+    InventoryClient inventoryClient;
 
     Inventory inventory, inventory2, inventory3;
 
     private static ObjectMapper mapper = new ObjectMapper();
-
 
     @Before
     public void setUp() throws Exception {
@@ -78,15 +77,26 @@ public class InventoryWebServiceControllerTest {
 
     //ObjectdMapper mapper = new ObjectMapper();
 
+
+    @Test
+    public void getInventory() throws Exception{
+        when(inventoryClient.getInventory(1)).thenReturn(inventory);
+
+        mockMvc.perform(get("/inventory/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(asJsonString(inventory)));
+    }
+
     @Test
     public void createInventory() throws Exception {
-        when(inventoryDao.addInventory(inventory2)).thenReturn(inventory);
+        when(inventoryClient.createInventory(inventory2)).thenReturn(inventory);
 
 //        String input = asJsonString(inventory2);
 //        String result = asJsonString(inventory);
 
-//        String input = mapper.writeValueAsString(inventory2);
-//        String result = mapper.writeValueAsString(inventory);
+        String input = mapper.writeValueAsString(inventory2);
+        String result = mapper.writeValueAsString(inventory);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/inventory")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,43 +109,9 @@ public class InventoryWebServiceControllerTest {
 
     }
 
-    @Test
-    public void deleteInventory() throws Exception {
-        mockMvc.perform(delete("/inventory/"+1))
-                .andDo(print())
-                .andExpect(status().isNoContent())
-                .andExpect(content().string(""));
-    }
 
     @Test
-    public void getInventoryList() throws Exception {
-        List<Inventory> allInventory = new ArrayList<>();
-        allInventory.add(inventory);
-        allInventory.add(inventory3);
-
-        when(inventoryDao.getAllInventory()).thenReturn(allInventory);
-
-        mockMvc.perform(get("/inventory"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(allInventory)));
-
-    }
-
-    @Test
-    public void getInventory() throws Exception {
-        when(inventoryDao.getInventory(1)).thenReturn(inventory);
-
-        mockMvc.perform(get("/inventory/1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(inventory)));
-
-    }
-
-    @Test
-    public void updateInventory() throws Exception {
-
+    public void updateInventory() throws Exception{
         mockMvc.perform(put("/inventory")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .contentType(MediaType.APPLICATION_JSON_UTF8) //UTF_8 is used to view request in the print below
@@ -145,4 +121,27 @@ public class InventoryWebServiceControllerTest {
                 .andExpect(content().string(""));
     }
 
+    @Test
+    public void deleteInventory() throws Exception{
+        mockMvc.perform(delete("/inventory/"+1))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+
+    }
+
+    @Test
+    public void getAllInventory() throws Exception {
+        List<Inventory> allInventory = new ArrayList<>();
+        allInventory.add(inventory);
+        allInventory.add(inventory3);
+
+        when(inventoryClient.getInventoryList()).thenReturn(allInventory);
+
+        mockMvc.perform(get("/inventory"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(asJsonString(allInventory)));
+
+    }
 }

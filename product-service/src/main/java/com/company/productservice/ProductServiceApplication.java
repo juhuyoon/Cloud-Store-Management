@@ -1,17 +1,15 @@
-package com.company.adminapi;
+package com.company.productservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
-public class AdminApiApplication {
+public class ProductServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AdminApiApplication.class, args);
+		SpringApplication.run(ProductServiceApplication.class, args);
 	}
 
 }
