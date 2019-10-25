@@ -22,15 +22,18 @@ public class InvoiceViewModel {
     private LocalDate purchase_date;
     @NotBlank(message = "Please provide a list of invoice items")
     private List<InvoiceItem> invoiceItems;
+    @Pattern(regexp = "[\\s]*[0-9]*[1-9]+",message="Id must be positive")
+    private Integer points;
 
     public InvoiceViewModel() {
     }
 
-    public InvoiceViewModel(Integer invoice_id, @Pattern(regexp = "[\\s]*[0-9]*[1-9]+", message = "Id must be positive") Integer customer_id, LocalDate purchase_date, @NotBlank(message = "Please provide a list of invoice items") List<InvoiceItem> invoiceItems) {
+    public InvoiceViewModel(Integer invoice_id, @Pattern(regexp = "[\\s]*[0-9]*[1-9]+", message = "Id must be positive") Integer customer_id, LocalDate purchase_date, @NotBlank(message = "Please provide a list of invoice items") List<InvoiceItem> invoiceItems, @Pattern(regexp = "[\\s]*[0-9]*[1-9]+", message = "Id must be positive") Integer points) {
         this.invoice_id = invoice_id;
         this.customer_id = customer_id;
         this.purchase_date = purchase_date;
         this.invoiceItems = invoiceItems;
+        this.points = points;
     }
 
     public Integer getInvoice_id() {
@@ -65,6 +68,14 @@ public class InvoiceViewModel {
         this.invoiceItems = invoiceItems;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,12 +84,13 @@ public class InvoiceViewModel {
         return Objects.equals(invoice_id, that.invoice_id) &&
                 Objects.equals(customer_id, that.customer_id) &&
                 Objects.equals(purchase_date, that.purchase_date) &&
-                Objects.equals(invoiceItems, that.invoiceItems);
+                Objects.equals(invoiceItems, that.invoiceItems) &&
+                Objects.equals(points, that.points);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoice_id, customer_id, purchase_date, invoiceItems);
+        return Objects.hash(invoice_id, customer_id, purchase_date, invoiceItems, points);
     }
 
     @Override
@@ -88,6 +100,7 @@ public class InvoiceViewModel {
                 ", customer_id=" + customer_id +
                 ", purchase_date=" + purchase_date +
                 ", invoiceItems=" + invoiceItems +
+                ", points=" + points +
                 '}';
     }
 }

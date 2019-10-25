@@ -48,6 +48,7 @@ public class InvoiceServiceLayerTest {
         input.setPurchase_date(LocalDate.of(2015, 8,5));
 
         input = invoiceDao.createInvoice(input);
+        System.out.println(input);
 
 
         InvoiceItem invoiceItem = new InvoiceItem();
@@ -102,6 +103,7 @@ public class InvoiceServiceLayerTest {
 
         List<InvoiceViewModel> fromService = service.getAllInvoice();
 
+
         assertEquals(fromService.size(), ivmList.size());
     }
 
@@ -140,9 +142,11 @@ public class InvoiceServiceLayerTest {
         iItemInput.setQuantity(1);
         iItemInput.setUnit_price(new BigDecimal("15.99"));
 
-        iItemInput = invoiceItemDao.createInvoiceItem(iItemInput);
+        iItemInput = service.createInvoiceItem(iItemInput);
+        System.out.println(iItemInput);
 
         InvoiceItem fromService = service.createInvoiceItem(iItemInput);
+        System.out.println(fromService);
         assertEquals(iItemInput, fromService);
     }
 

@@ -1,9 +1,6 @@
 package com.company.gamestoreretail.servicelayer;
 
-import com.company.gamestoreretail.model.CustomerViewModel;
-import com.company.gamestoreretail.model.Inventory;
-import com.company.gamestoreretail.model.InvoiceItem;
-import com.company.gamestoreretail.model.InvoiceViewModel;
+import com.company.gamestoreretail.model.*;
 import com.company.gamestoreretail.util.feign.*;
 import com.company.gamestoreretail.util.message.LevelViewModel;
 import org.junit.Before;
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,18 +41,66 @@ public class RetailServiceLayerTest {
 
     @Before
     public void setUp() throws Exception {
+        setUpCustomerViewModelMock();
+        setUpInventoryMock();
+        setUpInvoiceItemMock();
+        setUpInvoiceViewModelMock();
+        setUpLevelModelMock();
+        setUpProductModelMock();
     }
 
     @Test
     public void submitInvoice() {
-    }
+        InvoiceViewModel input = new InvoiceViewModel();
+        input.setInvoice_id(1);
+        input.setCustomer_id(1);
+        input.setPurchase_date(LocalDate.of(1993,8,5));
 
-    @Test
-    public void getInvoice() {
+        InvoiceItem iItem = new InvoiceItem();
+        iItem.setInvoice_item_id(1);
+        iItem.setInvoice_id(1);
+        iItem.setInventory_id(1);
+        iItem.setQuantity(5);
+        iItem.setUnit_price(new BigDecimal("15.99"));
+
+        List<InvoiceItem> iList = new ArrayList<>();
+        iList.add(iItem);
+
+        input.setInvoiceItems(iList);
+        input.setPoints(0);
+
+        input = invoiceClient.createInvoice(input);
+
+        InvoiceViewModel fromService = service.submitInvoice(input);
+
+        assertEquals(input, fromService);
     }
 
     @Test
     public void getAllInvoicesByCustomerId() {
+        InvoiceViewModel input = new InvoiceViewModel();
+        input.setInvoice_id(1);
+        input.setCustomer_id(1);
+        input.setPurchase_date(LocalDate.of(1993,8,5));
+
+        InvoiceItem iItem = new InvoiceItem();
+        iItem.setInvoice_item_id(1);
+        iItem.setInvoice_id(1);
+        iItem.setInventory_id(1);
+        iItem.setQuantity(5);
+        iItem.setUnit_price(new BigDecimal("15.99"));
+
+        List<InvoiceItem> iList = new ArrayList<>();
+        iList.add(iItem);
+
+        input.setInvoiceItems(iList);
+        input.setPoints(0);
+
+        input = invoiceClient.createInvoice(input);
+
+        List<InvoiceViewModel> fromService = service.getAllInvoicesByCustomerId(input.getInvoice_id());
+
+        assertEquals(1, fromService.size());
     }
 
     private void setUpCustomerViewModelMock() {
@@ -111,6 +157,7 @@ public class RetailServiceLayerTest {
         List<InvoiceItem> iList = new ArrayList<>();
         iList.add(iItem);
         expected.setInvoiceItems(iList);
+        expected.setPoints(0);
 
         doReturn(expected).when(invoiceClient).getInvoice(1);
         doReturn(expected).when(invoiceClient).getInvoiceByCustomerId(1);
@@ -124,12 +171,18 @@ public class RetailServiceLayerTest {
         expected.setMember_date(LocalDate.of(2019,10,26));
         expected.setPoints(50);
 
-
         doReturn(expected).when(levelClient).createLevelUp(expected);
         doReturn(expected).when(levelClient).getLevelUpByCustomer(1);
     }
 
     private void setUpProductModelMock() {
+        Product expected = new Product();
+        expected.setProduct_id(1);
+        expected.setProduct_name("Something");
+        expected.setProduct_description("Something else");
+        expected.setList_price(new BigDecimal("15.99"));
+        expected.setUnit_cost(new BigDecimal("15.99"));
 
+        doReturn(expected).when(productClient).getProduct(1);
     }
 }

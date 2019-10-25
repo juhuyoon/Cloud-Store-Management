@@ -18,20 +18,20 @@ public class InvoiceController {
     @Autowired
     private InvoiceServiceLayer service;
 
-    @PostMapping(value = "/invoices")
+    @PostMapping(value = "/invoice")
     @ResponseStatus(value = HttpStatus.CREATED)
     public InvoiceViewModel createInvoice(@RequestBody InvoiceViewModel ivm) {
         ivm = service.createInvoice(ivm);
         return ivm;
     }
 
-    @GetMapping(value = "/invoices")
+    @GetMapping(value = "/invoice")
     @ResponseStatus(value = HttpStatus.OK)
     public List<InvoiceViewModel> getAllInvoices() {
         return service.getAllInvoice();
     }
 
-    @GetMapping("/invoices/{invoice_id}")
+    @GetMapping("/invoice/{invoice_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public InvoiceViewModel getInvoice(@PathVariable(name="invoice_id") Integer invoice_id) {
         InvoiceViewModel ivm = service.getInvoice(invoice_id);
@@ -41,52 +41,52 @@ public class InvoiceController {
         return ivm;
     }
 
-    @GetMapping("/invoices/customer/{customer_id}")
+    @GetMapping("/invoice/customer/{customer_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public InvoiceViewModel getInvoiceByCustomerId(@PathVariable(name="customer_id") Integer customer_id) {
         return service.getInvoiceByCustomerId(customer_id);
     }
 
-    @PutMapping("/invoices/{invoice_id}")
+    @PutMapping("/invoice/{invoice_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateInvoice(@PathVariable(name="invoice_id") Integer invoice_id, @RequestBody @Valid InvoiceViewModel invoiceViewModel){
         invoiceViewModel.setInvoice_id(invoice_id);
         service.updateInvoice(invoiceViewModel);
     }
 
-    @DeleteMapping("/invoices/{invoice_id}")
+    @DeleteMapping("/invoice/{invoice_id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteInvoice(@PathVariable(name="{invoice_id") Integer invoice_id) {
+    public void deleteInvoice(@PathVariable(name="invoice_id") Integer invoice_id) {
         service.deleteInvoice(invoice_id);
     }
 
-    @GetMapping("/invoices/invoiceItem/{invoice_item_id}")
+    @GetMapping("/invoice/invoiceItem/{invoice_item_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public InvoiceItem getInvoiceItem(@PathVariable(name = "invoice_item_id") Integer invoice_item_id) {
         return service.getInvoiceItem(invoice_item_id);
     }
 
-    @GetMapping("/invoices/invoiceItem")
+    @GetMapping("/invoice/invoiceItem")
     @ResponseStatus(value = HttpStatus.OK)
     public List<InvoiceItem> getAllInvoiceItems() {
         return service.getAllInvoiceItems();
     }
 
-    @PostMapping("/invoices/invoiceItem")
+    @PostMapping("/invoice/invoiceItem")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public InvoiceItem createInvoiceItem(InvoiceItem invoiceItem) {
+    public InvoiceItem createInvoiceItem(@RequestBody InvoiceItem invoiceItem) {
         invoiceItem = service.createInvoiceItem(invoiceItem);
         return invoiceItem;
     }
 
-    @PutMapping("/invoices/invoiceItem/{invoice_item_id}")
+    @PutMapping("/invoice/invoiceItem/{invoice_item_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateInvoiceItem(@PathVariable(name="invoice_item_id") Integer invoice_item_id, @RequestBody @Valid InvoiceItem invoiceItem) {
         invoiceItem.setInvoice_item_id(invoice_item_id);
         service.updateInvoiceItem(invoiceItem);
     }
 
-    @DeleteMapping("/invoices/invoiceItem/{invoice_item_id}")
+    @DeleteMapping("/invoice/invoiceItem/{invoice_item_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteInvoiceItem(@PathVariable(name="invoice_item_id") Integer invoice_item_id) {
         service.deleteInvoiceItem(invoice_item_id);

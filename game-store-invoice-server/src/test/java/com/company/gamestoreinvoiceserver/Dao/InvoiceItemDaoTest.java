@@ -64,6 +64,7 @@ public class InvoiceItemDaoTest {
         assertEquals(1, invoiceItemDao.getAllInvoiceItems().size());
 
         InvoiceItem fromDao = invoiceItemDao.getInvoiceItem(invoiceItem1.getInvoice_item_id());
+        System.out.println(fromDao);
         assertEquals(invoiceItem1, fromDao);
 
         invoiceItemDao.deleteInvoiceItem(invoiceItem1.getInvoice_item_id());
