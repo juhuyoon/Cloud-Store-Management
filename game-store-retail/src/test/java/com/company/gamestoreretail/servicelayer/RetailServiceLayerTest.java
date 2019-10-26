@@ -77,7 +77,7 @@ public class RetailServiceLayerTest {
     }
 
     @Test
-    public void getAllInvoicesByCustomerId() {
+    public void shouldGetInvoiceByCustomerId() {
         InvoiceViewModel input = new InvoiceViewModel();
         input.setInvoice_id(1);
         input.setCustomer_id(1);
@@ -98,9 +98,9 @@ public class RetailServiceLayerTest {
 
         input = invoiceClient.createInvoice(input);
 
-        List<InvoiceViewModel> fromService = service.getAllInvoicesByCustomerId(input.getInvoice_id());
+        InvoiceViewModel fromService = service.getInvoiceByCustomerId(input.getInvoice_id());
 
-        assertEquals(1, fromService.size());
+        assertEquals(input, fromService);
     }
 
     private void setUpCustomerViewModelMock() {
