@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -52,6 +53,12 @@ public class InvoiceControllerTest {
 
     @MockBean
     private DataSource dataSource;
+
+    @Autowired
+    private InvoiceController controller;
+
+    @InjectMocks
+    private InvoiceControllerTest invoiceControllerTest;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -111,7 +118,7 @@ public class InvoiceControllerTest {
         when(service.createInvoice(ivm)).thenReturn(outputIvm);
         //testing the controller using mockMvc
         try {
-            this.mockMvc.perform(post("/invoices")
+            this.mockMvc.perform(post("/invoice")
                     .content(inputJson)
                     .contentType(MediaType.APPLICATION_JSON)
             ).andDo(print())
@@ -129,7 +136,7 @@ public class InvoiceControllerTest {
         when(invoiceDao.getInvoice(idForInvoiceThatDoesNotExist)).thenReturn(null);
 
         try {
-            this.mockMvc.perform(get("/invoices/" + idForInvoiceThatDoesNotExist))
+            this.mockMvc.perform(get("/invoice/" + idForInvoiceThatDoesNotExist))
                     .andDo(print())
                     .andExpect(status().isNotFound());
         } catch (Exception e) {
@@ -183,7 +190,7 @@ public class InvoiceControllerTest {
 
         when(service.getAllInvoice()).thenReturn(ivmList);
 
-        this.mockMvc.perform(get("/invoices"))
+        this.mockMvc.perform(get("/invoice"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(outputJson));
@@ -215,7 +222,7 @@ public class InvoiceControllerTest {
         when(service.getInvoice(1)).thenReturn(ivm);
 
         try {
-            this.mockMvc.perform(get("/invoices/" + ivm.getInvoice_id()))
+            this.mockMvc.perform(get("/invoice/" + ivm.getInvoice_id()))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(outputJson));
@@ -251,7 +258,7 @@ public class InvoiceControllerTest {
         }
 
         try {
-            this.mockMvc.perform(get("/invoices/customer/1"))
+            this.mockMvc.perform(get("/invoice/customer/1"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(content().json(outputJson));
@@ -284,7 +291,7 @@ public class InvoiceControllerTest {
         }
 
         try {
-            this.mockMvc.perform(MockMvcRequestBuilders.put("/invoices/" + inputIvm.getInvoice_id())
+            this.mockMvc.perform(MockMvcRequestBuilders.put("/invoice/" + inputIvm.getInvoice_id())
                         .content(inputJson)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andDo(print())
@@ -297,13 +304,13 @@ public class InvoiceControllerTest {
 
     @Test
     public void deleteInvoiceIsOk() throws Exception {
-        service.deleteInvoice(1);
+        controller.deleteInvoice(1);
+         verify(service, times(1)).deleteInvoice(1);
 
-        verify(service, times(1)).deleteInvoice(1);
-
-        this.mockMvc.perform(delete("/invoices/1"))
-                    .andDo(print())
-                    .andExpect(status().isOk());
+         this.mockMvc.perform(delete("/invoice/1"))
+                 .andDo(print())
+                 .andExpect(status().isOk())
+                 .andExpect(content().string(""));
     }
 
     @Test
@@ -329,7 +336,7 @@ public class InvoiceControllerTest {
 
      when(service.createInvoiceItem(input)).thenReturn(output);
 
-     this.mockMvc.perform(post("/invoices/invoiceItem")
+     this.mockMvc.perform(post("/invoice/invoiceItem")
                  .content(inputJson)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andDo(print())
@@ -350,7 +357,7 @@ public class InvoiceControllerTest {
 
         when(service.getInvoiceItem(1)).thenReturn(output);
 
-        this.mockMvc.perform(get("/invoices/invoiceItem/" + output.getInvoice_item_id()))
+        this.mockMvc.perform(get("/invoice/invoiceItem/" + output.getInvoice_item_id()))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(outputJson));
@@ -379,7 +386,7 @@ public class InvoiceControllerTest {
 
         when(service.getAllInvoiceItems()).thenReturn(iList);
 
-        this.mockMvc.perform(get("/invoices/invoiceItem"))
+        this.mockMvc.perform(get("/invoice/invoiceItem"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(outputJson));
@@ -398,7 +405,7 @@ public class InvoiceControllerTest {
 
         doNothing().when(service).updateInvoiceItem(any(InvoiceItem.class));
 
-        this.mockMvc.perform(put("/invoices/invoiceItem/1")
+        this.mockMvc.perform(put("/invoice/invoiceItem/1")
                     .content(inputJson)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andDo(print())
@@ -407,13 +414,14 @@ public class InvoiceControllerTest {
 
     @Test
     public void shouldDeleteInvoiceItemIsOk() throws Exception {
-        service.deleteInvoiceItem(1);
+        controller.deleteInvoiceItem(1);
 
         verify(service,times(1)).deleteInvoiceItem(1);
 
-        this.mockMvc.perform(delete("/invoices/invoiceItem/1"))
+        this.mockMvc.perform(delete("/invoice/invoiceItem/1"))
                     .andDo(print())
-                    .andExpect(status().isOk());
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(""));
     }
 
     @After
