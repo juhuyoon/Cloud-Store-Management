@@ -72,7 +72,7 @@ Circuit Breakers set for fallback measures with Netflix Hystrix.
 
 ### Documentation
 
-Your REST APIs must be documented with Swagger. [YAML file] (https://github.com/juhuyoon/Cloud-Store-Management/blob/master/U2Capstone.yaml)
+Your REST APIs must be documented with Swagger. [YAML file](https://github.com/juhuyoon/Cloud-Store-Management/blob/master/U2Capstone.yaml)
 
 ### Contributions
 1) Barbara Hernandez [Github](https://github.com/BarbaraHernandez)
